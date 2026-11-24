@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BrandStorySections } from './components/BrandStorySections';
 import { CartDrawer, type CartItem } from './components/CartDrawer';
 import { ContactSection } from './components/ContactSection';
 import { HeroSection } from './components/HeroSection';
@@ -56,6 +57,7 @@ export default function App() {
       />
 
       <main>
+        <BrandStorySections onAddToCart={handleAddToCart} />
         <SystemDeepDive />
         <ProductShowcase
           searchQuery={searchQuery}

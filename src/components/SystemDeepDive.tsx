@@ -18,25 +18,33 @@ const SURFACES = [
     id: 'sofa',
     label: 'Sofa',
     icon: Sofa,
-    note: 'Lifts stubborn undercoat from linen, velvet, and microfiber couches in two silent passes.',
+    photo: '/images/lifestyle-couch-dark.webp',
+    stat: '98% fur lifted in 2 passes',
+    note: 'Lifts stubborn Golden Retriever and cat undercoat from leather, linen, velvet, and microfiber couches without sticky residue.',
   },
   {
     id: 'carpet',
     label: 'Carpet',
     icon: Sparkles,
-    note: 'Electrostatic bristles pull deeply trapped fur from rugs and stairs without dragging out a vacuum.',
+    photo: '/images/lifestyle-carpet.webp',
+    stat: 'Deep pile static grip',
+    note: 'Electrostatic bristles pull deeply trapped fur from plush rugs and carpeted stairs without dragging out a heavy vacuum.',
   },
   {
     id: 'clothing',
     label: 'Clothing',
     icon: Shirt,
-    note: 'Leaves black coats, fleece, and car upholstery completely hair-free with zero sticky glue residue.',
+    photo: '/images/lifestyle-clothing.webp',
+    stat: 'Zero glue on knitwear',
+    note: 'Leaves cozy sweaters, black wool coats, and car seats hair-free before you step out — zero disposable paper sheets.',
   },
   {
     id: 'bedding',
     label: 'Bedding',
     icon: BedDouble,
-    note: 'Whisper-quiet glide clears duvets, throws, and pet beds while keeping nervous dogs & cats calm.',
+    photo: '/images/lifestyle-bedding.webp',
+    stat: 'Whisper-silent glide',
+    note: 'Quietly clears crisp white duvets, throws, and pet beds while keeping sleeping cats and anxious puppies calm.',
   },
 ];
 
@@ -216,8 +224,8 @@ export function SystemDeepDive() {
               </div>
             </div>
 
-            {/* Interactive Surface Bar inside the dark anatomy slab */}
-            <div className="mx-auto mt-10 max-w-2xl rounded-3xl border border-white/12 bg-white/6 p-4 backdrop-blur-md sm:p-5">
+            {/* Interactive Surface Bar with Live Verified Lifestyle Photo */}
+            <div className="mx-auto mt-10 max-w-3xl rounded-3xl border border-white/12 bg-white/6 p-4 backdrop-blur-md sm:p-6">
               <div className="flex flex-wrap items-center justify-center gap-2" role="tablist">
                 {SURFACES.map((surface) => {
                   const Icon = surface.icon;
@@ -241,9 +249,27 @@ export function SystemDeepDive() {
                   );
                 })}
               </div>
-              <p className="mt-3.5 text-center text-xs leading-relaxed text-white/80 sm:text-sm">
-                {activeSurface.note}
-              </p>
+
+              <div className="mt-5 grid items-center gap-5 sm:grid-cols-[220px_1fr]">
+                <div className="overflow-hidden rounded-2xl border border-white/15 shadow-lg">
+                  <img
+                    src={activeSurface.photo}
+                    alt={`${activeSurface.label} pet hair removal`}
+                    className="aspect-[3/2] w-full object-cover"
+                  />
+                </div>
+                <div className="text-left">
+                  <div className="inline-block rounded-full bg-[#4BA3E3]/25 px-3 py-0.5 text-[11px] font-extrabold text-[#93CEFA]">
+                    {activeSurface.stat}
+                  </div>
+                  <h4 className="mt-2 font-display text-lg font-extrabold text-white">
+                    Built for {activeSurface.label}
+                  </h4>
+                  <p className="mt-1 text-xs leading-relaxed text-white/80 sm:text-sm">
+                    {activeSurface.note}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
