@@ -1,0 +1,97 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-gold-50: #FFF9E6;
+  --color-gold-100: #FDEEB8;
+  --color-gold-300: #F8D365;
+  --color-gold-400: #F5C542;
+  --color-gold-500: #D8A437;
+  --color-gold-600: #B48428;
+  --color-gold-800: #7B5819;
+
+  --color-cream: #FBF7EE;
+  --color-cream-deep: #F3ECDC;
+  --color-ink: #1B1712;
+  --color-ink-muted: #5C5346;
+
+  --color-leaf-500: #56A43A;
+  --color-leaf-600: #3E8227;
+  --color-navy-600: #1D4E89;
+  --color-navy-700: #153B68;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+  }
+}
+
+/* Exact PAWZO-inspired sunlit warm golden-amber studio gradient */
+.hero-golden-backdrop {
+  background:
+    radial-gradient(ellipse 68% 72% at 73% 54%, #E8BC58 0%, #CFA03B 34%, #AA7D27 68%, #7B581A 100%);
+}
+
+/* Subtle studio vignette around hero edges so 16:9 video edges feather naturally */
+.hero-vignette {
+  background:
+    linear-gradient(180deg, rgba(61, 42, 10, 0.34) 0%, rgba(61, 42, 10, 0) 18%, rgba(61, 42, 10, 0) 80%, rgba(61, 42, 10, 0.28) 100%),
+    linear-gradient(90deg, rgba(66, 46, 12, 0.42) 0%, rgba(66, 46, 12, 0.14) 36%, rgba(66, 46, 12, 0) 62%);
+}
+
+/* Hide default cursor inside hero stage when custom bone cursor is active (desktop pointer only) */
+@media (hover: hover) and (pointer: fine) {
+  .bone-cursor-zone,
+  .bone-cursor-zone * {
+    cursor: none !important;
+  }
+  .bone-cursor-zone input,
+  .bone-cursor-zone textarea {
+    cursor: text !important;
+  }
+}
+
+/* Soft edge feather mask for narrow/non-16:9 dropped frames */
+.frame-feather-mask {
+  -webkit-mask-image: radial-gradient(ellipse 74% 82% at 54% 52%, #000 58%, transparent 100%);
+  mask-image: radial-gradient(ellipse 74% 82% at 54% 52%, #000 58%, transparent 100%);
+}
+
+/* Signature dark charcoal matte slab with organic topographic wave contours (adapted to RIZZEXPO warm theme) */
+.charcoal-topo-card {
+  background-color: #24221F;
+  background-image:
+    radial-gradient(ellipse 70% 60% at 80% 20%, rgba(245, 197, 66, 0.08) 0%, transparent 65%),
+    radial-gradient(ellipse 55% 55% at 15% 85%, rgba(99, 190, 70, 0.07) 0%, transparent 60%),
+    url("data:image/svg+xml,%3Csvg width='720' height='460' viewBox='0 0 720 460' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-40 90C90 30 210 180 370 120C530 60 610 150 760 95' stroke='%23FFFFFF' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M-40 165C110 105 240 250 400 185C560 120 630 215 760 165' stroke='%23FFFFFF' stroke-opacity='0.04' stroke-width='1.5'/%3E%3Cpath d='M-40 245C130 185 265 320 430 255C595 190 650 285 760 235' stroke='%23FFFFFF' stroke-opacity='0.04' stroke-width='1.5'/%3E%3Cpath d='M-40 330C150 270 285 395 455 330C625 265 675 360 760 315' stroke='%23FFFFFF' stroke-opacity='0.035' stroke-width='1.5'/%3E%3Cpath d='M-40 410C170 355 310 460 480 400C650 340 695 425 760 390' stroke='%23FFFFFF' stroke-opacity='0.03' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: cover, cover, 720px 460px;
+}
+
+.charcoal-topo-card-blue {
+  background-color: #222326;
+  background-image:
+    radial-gradient(ellipse 65% 65% at 50% 58%, rgba(75, 163, 227, 0.14) 0%, transparent 65%),
+    url("data:image/svg+xml,%3Csvg width='720' height='460' viewBox='0 0 720 460' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M-40 90C90 30 210 180 370 120C530 60 610 150 760 95' stroke='%23FFFFFF' stroke-opacity='0.045' stroke-width='1.5'/%3E%3Cpath d='M-40 165C110 105 240 250 400 185C560 120 630 215 760 165' stroke='%23FFFFFF' stroke-opacity='0.04' stroke-width='1.5'/%3E%3Cpath d='M-40 245C130 185 265 320 430 255C595 190 650 285 760 235' stroke='%23FFFFFF' stroke-opacity='0.04' stroke-width='1.5'/%3E%3Cpath d='M-40 330C150 270 285 395 455 330C625 265 675 360 760 315' stroke='%23FFFFFF' stroke-opacity='0.035' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-size: cover, 720px 460px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
