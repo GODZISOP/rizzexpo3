@@ -2,13 +2,18 @@ import { useState } from 'react';
 import {
   CheckCircle2,
   Clock,
+  Globe,
   Mail,
+  MapPin,
+  MessageCircle,
   MessageSquare,
   Package,
+  Phone,
   Send,
   ShieldCheck,
   Sparkles,
   Store,
+  User,
 } from 'lucide-react';
 import type { SiteConfig } from '../admin';
 
@@ -23,7 +28,16 @@ type TopicId = (typeof TOPICS)[number]['id'];
 
 export function ContactSection({ siteConfig }: { siteConfig?: SiteConfig }) {
   const contactEmail = siteConfig?.email || 'info@rizzexpo.com';
+  const secondaryEmail = siteConfig?.emailSecondary || '';
   const brandName = siteConfig?.shortName || siteConfig?.companyName || 'RIZZEXPO';
+  const ownerName = siteConfig?.ownerFullName || siteConfig?.ownerName || '';
+  const phoneDisplay = siteConfig?.phonePrimary || '';
+  const phoneTel = siteConfig?.phonePrimaryTel || phoneDisplay.replace(/\D/g, '');
+  const whatsappDisplay = siteConfig?.whatsappDisplay || '';
+  const whatsappDigits = siteConfig?.whatsappNumber || whatsappDisplay.replace(/\D/g, '');
+  const addressLine1 = siteConfig?.address?.line1 || '';
+  const addressLine2 = siteConfig?.address?.line2 || '';
+  const websiteDisplay = siteConfig?.website || '';
   const [topic, setTopic] = useState<TopicId>('product');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -90,8 +104,107 @@ export function ContactSection({ siteConfig }: { siteConfig?: SiteConfig }) {
                       >
                         {contactEmail}
                       </a>
+                      {secondaryEmail && (
+                        <div>
+                          <a
+                            href={`mailto:${secondaryEmail}`}
+                            className="text-xs font-semibold text-white/75 transition hover:text-[#F5C542]"
+                          >
+                            {secondaryEmail}
+                          </a>
+                        </div>
+                      )}
                     </div>
                   </div>
+
+                  {phoneDisplay && (
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#F5C542]/90 text-[#1B1712] shadow-md">
+                        <Phone className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <div className="text-[11px] font-bold tracking-wider text-white/55 uppercase">
+                          {siteConfig?.contact?.labels?.phone || 'Phone Number'}
+                        </div>
+                        <a
+                          href={`tel:${phoneTel}`}
+                          className="font-display text-base font-extrabold text-white transition hover:text-[#F5C542]"
+                        >
+                          {phoneDisplay}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {(whatsappDisplay || whatsappDigits) && (
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#25D366] text-[#11240B] shadow-md">
+                        <MessageCircle className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <div className="text-[11px] font-bold tracking-wider text-white/55 uppercase">
+                          {siteConfig?.contact?.labels?.whatsapp || 'WhatsApp Chat'}
+                        </div>
+                        <a
+                          href={`https://wa.me/${whatsappDigits}`}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-display text-base font-extrabold text-white transition hover:text-[#25D366]"
+                        >
+                          {whatsappDisplay || `+${whatsappDigits}`}
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {(addressLine1 || addressLine2) && (
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/15 text-[#F5C542] shadow-md">
+                        <MapPin className="h-5 w-5" />
+                      </span>
+                      <div>
+                        <div className="text-[11px] font-bold tracking-wider text-white/55 uppercase">
+                          {siteConfig?.contact?.labels?.hub || 'Operating Hub'}
+                        </div>
+                        <div className="font-display text-sm font-extrabold text-white">
+                          {addressLine1}
+                        </div>
+                        {addressLine2 && (
+                          <div className="text-xs text-white/70">{addressLine2}</div>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {(ownerName || websiteDisplay) && (
+                    <div className="flex items-center gap-4">
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-white/12 text-white shadow-md">
+                        {ownerName ? <User className="h-5 w-5" /> : <Globe className="h-5 w-5" />}
+                      </span>
+                      <div>
+                        <div className="text-[11px] font-bold tracking-wider text-white/55 uppercase">
+                          {siteConfig?.contact?.labels?.management || 'Management'}
+                        </div>
+                        <div className="font-display text-sm font-extrabold text-white">
+                          {ownerName ? `${brandName} · ${ownerName}` : brandName}
+                        </div>
+                        {websiteDisplay && (
+                          <a
+                            href={
+                              websiteDisplay.startsWith('http')
+                                ? websiteDisplay
+                                : `https://${websiteDisplay}`
+                            }
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-semibold text-[#F5C542] hover:underline"
+                          >
+                            {websiteDisplay}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  )}
 
                   <div className="flex items-center gap-4">
                     <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-[#63BE46] text-[#11240B] shadow-md">

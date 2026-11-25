@@ -15,6 +15,9 @@ export interface SiteConfig {
   whatsappNumber: string;
   whatsappDisplay: string;
   email: string;
+  emailSecondary?: string;
+  ownerFullName?: string;
+  ownerName?: string;
   website: string;
   address: {
     line1: string;

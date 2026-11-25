@@ -206,6 +206,16 @@ export function Footer({ siteConfig }: { siteConfig?: SiteConfig }) {
 
   const brandName = siteConfig?.shortName || siteConfig?.companyName || 'RIZZEXPO';
   const contactEmail = siteConfig?.email || 'info@rizzexpo.com';
+  const secondaryEmail = siteConfig?.emailSecondary || '';
+  const phoneDisplay = siteConfig?.phonePrimary || '';
+  const phoneTel = siteConfig?.phonePrimaryTel || phoneDisplay.replace(/\D/g, '');
+  const whatsappDisplay = siteConfig?.whatsappDisplay || '';
+  const whatsappDigits = siteConfig?.whatsappNumber || whatsappDisplay.replace(/\D/g, '');
+  const addressFull =
+    siteConfig?.address?.full ||
+    [siteConfig?.address?.line1, siteConfig?.address?.line2].filter(Boolean).join(', ');
+  const ownerName = siteConfig?.ownerFullName || siteConfig?.ownerName || '';
+  const socials = siteConfig?.footer?.socials || [];
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -247,6 +257,65 @@ export function Footer({ siteConfig }: { siteConfig?: SiteConfig }) {
                 Contact
               </a>
             </div>
+
+            {(phoneDisplay || whatsappDisplay || addressFull || ownerName || socials.length > 0) && (
+              <div className="mt-6 space-y-1.5 text-xs text-white/65">
+                {ownerName && (
+                  <p>
+                    <span className="font-semibold text-white/85">Contact Person:</span> {ownerName}
+                  </p>
+                )}
+                {phoneDisplay && (
+                  <p>
+                    <span className="font-semibold text-white/85">Phone:</span>{' '}
+                    <a href={`tel:${phoneTel}`} className="hover:text-[#F5C542]">
+                      {phoneDisplay}
+                    </a>
+                  </p>
+                )}
+                {(whatsappDisplay || whatsappDigits) && (
+                  <p>
+                    <span className="font-semibold text-white/85">WhatsApp:</span>{' '}
+                    <a
+                      href={`https://wa.me/${whatsappDigits}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[#F5C542]"
+                    >
+                      {whatsappDisplay || `+${whatsappDigits}`}
+                    </a>
+                  </p>
+                )}
+                {secondaryEmail && (
+                  <p>
+                    <span className="font-semibold text-white/85">Alt Email:</span>{' '}
+                    <a href={`mailto:${secondaryEmail}`} className="hover:text-[#F5C542]">
+                      {secondaryEmail}
+                    </a>
+                  </p>
+                )}
+                {addressFull && (
+                  <p>
+                    <span className="font-semibold text-white/85">Address:</span> {addressFull}
+                  </p>
+                )}
+                {socials.length > 0 && (
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    {socials.map((s) => (
+                      <a
+                        key={s.label}
+                        href={s.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="rounded-full border border-white/15 px-3 py-1 text-[11px] font-semibold text-white/80 transition hover:border-[#F5C542] hover:text-[#F5C542]"
+                      >
+                        {s.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           <div className="rounded-[1.8rem] border border-white/12 bg-white/6 p-6 backdrop-blur-md">
