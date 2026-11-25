@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Heart, Menu, PawPrint, Search, ShoppingBag, X } from 'lucide-react';
+import type { SiteConfig } from '../admin';
 
 interface NavbarProps {
   cartCount: number;
@@ -7,6 +8,7 @@ interface NavbarProps {
   searchQuery: string;
   onSearchChange: (val: string) => void;
   onOpenCart: () => void;
+  siteConfig?: SiteConfig;
 }
 
 export function Navbar({
@@ -15,6 +17,7 @@ export function Navbar({
   searchQuery,
   onSearchChange,
   onOpenCart,
+  siteConfig,
 }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -38,7 +41,7 @@ export function Navbar({
             <PawPrint className="h-5 w-5 fill-current" />
           </span>
           <span className="font-display text-lg font-extrabold tracking-tight text-white">
-            RIZZEXPO
+            {siteConfig?.shortName || siteConfig?.companyName || 'RIZZEXPO'}
           </span>
         </a>
 

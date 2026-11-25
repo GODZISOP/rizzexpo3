@@ -10,6 +10,7 @@ import {
   Sparkles,
   Store,
 } from 'lucide-react';
+import type { SiteConfig } from '../admin';
 
 const TOPICS = [
   { id: 'order', label: 'Order Help', icon: Package },
@@ -20,7 +21,9 @@ const TOPICS = [
 
 type TopicId = (typeof TOPICS)[number]['id'];
 
-export function ContactSection() {
+export function ContactSection({ siteConfig }: { siteConfig?: SiteConfig }) {
+  const contactEmail = siteConfig?.email || 'info@rizzexpo.com';
+  const brandName = siteConfig?.shortName || siteConfig?.companyName || 'RIZZEXPO';
   const [topic, setTopic] = useState<TopicId>('product');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -59,7 +62,7 @@ export function ContactSection() {
               <div>
                 <span className="inline-flex items-center gap-2 rounded-full bg-[#F5C542] px-3.5 py-1 text-[11px] font-extrabold tracking-[0.14em] text-[#1B1712] uppercase">
                   <MessageSquare className="h-3.5 w-3.5" />
-                  Pet Care Support
+                  {siteConfig?.contact?.sectionTag || 'Pet Care Support'}
                 </span>
 
                 <h2 className="mt-4 font-display text-4xl font-extrabold leading-[0.98] tracking-[-0.03em] uppercase sm:text-5xl">
@@ -67,8 +70,8 @@ export function ContactSection() {
                 </h2>
 
                 <p className="mt-4 max-w-md text-sm leading-relaxed text-white/75 sm:text-base">
-                  Questions about our leak-proof waste bags, electrostatic roller surfaces, or
-                  wholesale stock for your store? Real pet-care specialists reply fast.
+                  {siteConfig?.contact?.tagline ||
+                    'Questions about our leak-proof waste bags, electrostatic roller surfaces, or wholesale stock for your store? Real pet-care specialists reply fast.'}
                 </p>
 
                 {/* Circular Icon Contact Channels (matching radial callout badges) */}
@@ -82,10 +85,10 @@ export function ContactSection() {
                         Customer Care &amp; Orders
                       </div>
                       <a
-                        href="mailto:info@rizzexpo.com"
+                        href={`mailto:${contactEmail}`}
                         className="font-display text-base font-extrabold text-white transition hover:text-[#F5C542]"
                       >
-                        info@rizzexpo.com
+                        {contactEmail}
                       </a>
                     </div>
                   </div>
@@ -99,10 +102,10 @@ export function ContactSection() {
                         Wholesale &amp; Pet Boutiques
                       </div>
                       <a
-                        href="mailto:info@rizzexpo.com?subject=RIZZEXPO%20Wholesale%20Inquiry"
+                        href={`mailto:${contactEmail}?subject=${encodeURIComponent(brandName + ' Wholesale Inquiry')}`}
                         className="font-display text-base font-extrabold text-white transition hover:text-[#63BE46]"
                       >
-                        info@rizzexpo.com
+                        {contactEmail}
                       </a>
                     </div>
                   </div>
@@ -116,7 +119,8 @@ export function ContactSection() {
                         Response &amp; Dispatch Hours
                       </div>
                       <div className="font-display text-sm font-extrabold text-white">
-                        Mon – Sat · 9 AM – 7 PM · Avg reply under 2 hrs
+                        {siteConfig?.footer?.operationsLabel ||
+                          'Mon – Sat · 9 AM – 7 PM · Avg reply under 2 hrs'}
                       </div>
                     </div>
                   </div>

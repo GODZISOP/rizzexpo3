@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { AdminPanel, useActiveSiteConfig } from './admin';
 import { BrandStorySections } from './components/BrandStorySections';
 import { CartDrawer, type CartItem } from './components/CartDrawer';
 import { ContactSection } from './components/ContactSection';
@@ -7,11 +8,80 @@ import { ProductShowcase, type AddToCartPayload } from './components/ProductShow
 import { Footer, ReviewsAndFaq } from './components/ReviewsAndFaq';
 import { SystemDeepDive } from './components/SystemDeepDive';
 
+function isAdminHostname() {
+  if (typeof window === 'undefined') return false;
+  const host = window.location.hostname.toLowerCase();
+  return (
+    host.startsWith('admin.') ||
+    host.includes('-admin.') ||
+    host.includes('admin-') ||
+    import.meta.env.VITE_ADMIN_ONLY === 'true'
+  );
+}
+
+function checkIsAdminRoute() {
+  if (typeof window === 'undefined') return false;
+  const params = new URLSearchParams(window.location.search);
+  const cleanPath = window.location.pathname.replace(/\/+$/, '').toLowerCase();
+  const cleanHash = window.location.hash.toLowerCase();
+  if (
+    cleanPath.endsWith('/admin') ||
+    cleanHash.startsWith('#admin') ||
+    cleanHash.startsWith('#/admin') ||
+    params.has('admin')
+  ) {
+    return true;
+  }
+  if (isAdminHostname() && !params.has('preview')) {
+    return true;
+  }
+  return false;
+}
+
 export default function App() {
+  const { config: siteConfig, refresh: refreshActiveSite } = useActiveSiteConfig();
+  const [isAdminMode, setIsAdminMode] = useState(checkIsAdminRoute);
+
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [wishlistIds, setWishlistIds] = useState<string[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const onRouteChange = () => setIsAdminMode(checkIsAdminRoute());
+    window.addEventListener('hashchange', onRouteChange);
+    window.addEventListener('popstate', onRouteChange);
+    return () => {
+      window.removeEventListener('hashchange', onRouteChange);
+      window.removeEventListener('popstate', onRouteChange);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isAdminMode) {
+      document.title = 'Control Panel | Multi-Website Admin';
+      return;
+    }
+    if (siteConfig.companyName) {
+      document.title = `${siteConfig.companyName} — ${siteConfig.tagline || 'Pet Care System'}`;
+    }
+  }, [siteConfig, isAdminMode]);
+
+  const exitAdmin = (targetSlug: string | null = null) => {
+    const params = new URLSearchParams();
+    if (targetSlug) params.set('site', targetSlug);
+    if (isAdminHostname()) params.set('preview', '1');
+    const qs = params.toString();
+    const nextUrl = qs ? `/?${qs}` : '/';
+    window.history.pushState({}, '', nextUrl);
+    setIsAdminMode(false);
+    refreshActiveSite();
+    window.scrollTo({ top: 0 });
+  };
+
+  if (isAdminMode) {
+    return <AdminPanel onExitAdmin={exitAdmin} />;
+  }
 
   const cartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -54,6 +124,7 @@ export default function App() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onOpenCart={() => setCartOpen(true)}
+        siteConfig={siteConfig}
       />
 
       <main>
@@ -67,10 +138,10 @@ export default function App() {
           onClearSearch={() => setSearchQuery('')}
         />
         <ReviewsAndFaq />
-        <ContactSection />
+        <ContactSection siteConfig={siteConfig} />
       </main>
 
-      <Footer />
+      <Footer siteConfig={siteConfig} />
 
       <CartDrawer
         open={cartOpen}

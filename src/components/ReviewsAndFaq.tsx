@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ArrowRight, CheckCircle2, ChevronDown, Mail, PawPrint, Star } from 'lucide-react';
+import type { SiteConfig } from '../admin';
 import { FAQS, REVIEWS, type FaqCategory } from '../data/products';
 
 const FAQ_TABS: Array<'All' | FaqCategory> = [
@@ -199,9 +200,12 @@ export function ReviewsAndFaq() {
   );
 }
 
-export function Footer() {
+export function Footer({ siteConfig }: { siteConfig?: SiteConfig }) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+
+  const brandName = siteConfig?.shortName || siteConfig?.companyName || 'RIZZEXPO';
+  const contactEmail = siteConfig?.email || 'info@rizzexpo.com';
 
   const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
@@ -219,11 +223,11 @@ export function Footer() {
               <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#F5C542] text-[#1B1712]">
                 <PawPrint className="h-5 w-5 fill-current" />
               </span>
-              <span className="font-display text-xl font-extrabold tracking-tight">RIZZEXPO</span>
+              <span className="font-display text-xl font-extrabold tracking-tight">{brandName}</span>
             </a>
             <p className="mt-4 max-w-md text-sm leading-relaxed text-white/70">
-              Smart, reusable, eco-conscious pet care essentials engineered for spotless homes and
-              stress-free walks.
+              {siteConfig?.footer?.description ||
+                'Smart, reusable, eco-conscious pet care essentials engineered for spotless homes and stress-free walks.'}
             </p>
 
             <div className="mt-7 flex flex-wrap gap-5 text-sm font-medium text-white/75">
@@ -251,12 +255,16 @@ export function Footer() {
               Get 15% off your first RIZZEXPO pack
             </div>
             <p className="mt-2 text-xs leading-relaxed text-white/75 sm:text-sm">
-              Join our pack for new pet care drops and clean-home tips. Zero spam.
+              {siteConfig?.footer?.newsletterTagline ||
+                'Join our pack for new pet care drops and clean-home tips. Zero spam.'}
             </p>
             {subscribed ? (
               <div className="mt-4 flex items-center gap-2 rounded-2xl bg-[#63BE46]/25 px-4 py-3 text-xs font-bold text-[#C7F5B6] sm:text-sm">
                 <CheckCircle2 className="h-4 w-4 shrink-0" />
-                <span>Welcome! Use code PAWS15 at checkout for 15% off.</span>
+                <span>
+                  {siteConfig?.footer?.newsletterSuccess ||
+                    'Welcome! Use code PAWS15 at checkout for 15% off.'}
+                </span>
               </div>
             ) : (
               <form onSubmit={handleSubscribe} className="mt-4 flex flex-col gap-2.5 sm:flex-row">
@@ -281,10 +289,13 @@ export function Footer() {
         </div>
 
           <div className="mt-8 flex flex-col items-center justify-between gap-4 text-xs text-white/50 sm:flex-row">
-            <p>© {new Date().getFullYear()} RIZZEXPO Pet Care System. All rights reserved.</p>
             <p>
-              <a href="mailto:info@rizzexpo.com" className="text-white/75 hover:text-[#F5C542]">
-                info@rizzexpo.com
+              © {new Date().getFullYear()} {siteConfig?.legalName || 'RIZZEXPO Pet Care System'}.{' '}
+              {siteConfig?.footer?.copyrightSuffix || 'All rights reserved.'}
+            </p>
+            <p>
+              <a href={`mailto:${contactEmail}`} className="text-white/75 hover:text-[#F5C542]">
+                {contactEmail}
               </a>{' '}
               · Ships within 24 hours · 30-day spotless home guarantee
             </p>

@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { ArrowRight, Mouse, Star } from 'lucide-react';
 import { motion } from 'motion/react';
+import type { SiteConfig } from '../admin';
 import { BoneCursor } from './BoneCursor';
 import { DogFrameStage } from './DogFrameStage';
 import { Navbar } from './Navbar';
@@ -11,6 +12,7 @@ interface HeroSectionProps {
   searchQuery: string;
   onSearchChange: (val: string) => void;
   onOpenCart: () => void;
+  siteConfig?: SiteConfig;
 }
 
 export function HeroSection({
@@ -19,6 +21,7 @@ export function HeroSection({
   searchQuery,
   onSearchChange,
   onOpenCart,
+  siteConfig,
 }: HeroSectionProps) {
   const heroRef = useRef<HTMLElement>(null);
   const [cursorInHero, setCursorInHero] = useState(false);
@@ -43,6 +46,7 @@ export function HeroSection({
         searchQuery={searchQuery}
         onSearchChange={onSearchChange}
         onOpenCart={onOpenCart}
+        siteConfig={siteConfig}
       />
 
       {/* Hero Main Grid */}
@@ -56,7 +60,7 @@ export function HeroSection({
             className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/20 bg-[#2C1F0A]/45 px-3.5 py-1.5 text-[11px] font-bold tracking-[0.14em] text-[#FFE596] uppercase backdrop-blur-md"
           >
             <span className="h-1.5 w-1.5 rounded-full bg-[#FFD866] shadow-[0_0_8px_#FFD866]" />
-            Ships within 24 hours
+            {siteConfig?.eyebrowStandard || 'Ships within 24 hours'}
           </motion.div>
 
           {/* Bold PAWZO-style Display Headline */}
@@ -66,11 +70,18 @@ export function HeroSection({
             transition={{ duration: 0.55, delay: 0.06 }}
             className="font-display text-[clamp(2.55rem,4.9vw,4.25rem)] font-extrabold leading-[0.98] tracking-[-0.035em] text-white drop-shadow-[0_6px_24px_rgba(61,39,7,0.28)]"
           >
-            Happiness on{' '}
-            <span className="text-[#FFD966]">four paws</span>
-            <br />— clean home
-            <br />
-            at your door
+            {siteConfig?.heroTitle &&
+            siteConfig.heroTitle !== 'Happiness on four paws — clean home at your door' ? (
+              siteConfig.heroTitle
+            ) : (
+              <>
+                Happiness on{' '}
+                <span className="text-[#FFD966]">four paws</span>
+                <br />— clean home
+                <br />
+                at your door
+              </>
+            )}
           </motion.h1>
 
           {/* RIZZEXPO Brand Value Subcopy */}
@@ -80,8 +91,8 @@ export function HeroSection({
             transition={{ duration: 0.55, delay: 0.14 }}
             className="mt-5 max-w-sm text-[15px] leading-relaxed text-white/90 sm:text-base"
           >
-            Leak-proof eco waste bags with recycled cores and reusable electrostatic hair removers
-            — the RIZZEXPO Pet Care System built to keep walks clean and sofas spotless.
+            {siteConfig?.heroSubtitle ||
+              'Leak-proof eco waste bags with recycled cores and reusable electrostatic hair removers — the RIZZEXPO Pet Care System built to keep walks clean and sofas spotless.'}
           </motion.p>
 
           {/* Primary & Secondary CTAs */}
